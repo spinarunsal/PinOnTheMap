@@ -52,6 +52,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         emailTextField.isEnabled = !logginIn
         passwordTextField.isEnabled = !logginIn
         signupButton.isEnabled = !logginIn
+        
     }
     
     // MARK: Handle Login Response

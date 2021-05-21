@@ -11,6 +11,7 @@ import UIKit
 class TableViewController:UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var studentListTableView: UITableView!
+    @IBOutlet weak var logoutButton: UIBarButtonItem!
     @IBOutlet weak var studentName: UILabel!
     @IBOutlet weak var studentWebAdress: UILabel!
     
@@ -63,5 +64,15 @@ class TableViewController:UIViewController, UITableViewDelegate, UITableViewData
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let student = students[indexPath.row]
         openLink(student.mediaURL ?? "")
+    }
+    
+    // MARK: Logout Button
+    
+    @IBAction func logoutButtonTapped(_ sender: Any) {
+        UdacityClient.logout {
+            DispatchQueue.main.async {
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
     }
 }

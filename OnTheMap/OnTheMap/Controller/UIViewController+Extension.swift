@@ -25,4 +25,8 @@ extension UIViewController {
         }
         UIApplication.shared.open(url,options: [:])
     }
+    
+    // MARK: LogOut Button Tapped
+    
+    
 }
