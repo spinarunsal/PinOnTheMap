@@ -12,6 +12,7 @@ class UdacityClient {
     struct Auth {
         static var sessionId: String? = nil
         static var expiration: String? = nil
+        static var objectId = ""
         static var key = ""
         static var firstname = ""
         static var lastname = ""
@@ -22,19 +23,19 @@ class UdacityClient {
         static let base = "https://onthemap-api.udacity.com/v1"
         
         case login
-        case logout
         case signUp
         case getLogginUserProfile
         case getStudentLocation
+        case addStudentLocation
         
         var stringValue: String {
             switch self {
             case .login:
                 return Endpoints.base + "/session"
-            case .logout: return Endpoints.base + "/session"
             case .signUp: return "https://auth.udacity.com/sign-up"
             case .getLogginUserProfile: return Endpoints.base + "/users/" + Auth.key
             case .getStudentLocation: return Endpoints.base + "/StudentLocation?order=-updatedAt"
+            case .addStudentLocation: return Endpoints.base + "/StudentLocation/"
             }
         }
         
@@ -62,7 +63,7 @@ class UdacityClient {
     }
     //MARK: *Logout
     class func logout(completion: @escaping () -> Void) {
-        var request = URLRequest(url: Endpoints.logout.url)
+        var request = URLRequest(url: Endpoints.login.url)
         request.httpMethod = "DELETE"
         
         var xsrfCookie: HTTPCookie? = nil
@@ -114,6 +115,19 @@ class UdacityClient {
                 completion([],error)
             }
         }
+    }
+    
+    class func addStudentLocation(information:LocationsResponse, completion: @escaping (Bool, Error?) -> Void) {
+        let body = "{\"uniqueKey\": \"\(information.uniqueKey)\", \"firstName\": \"\(information.firstName)\", \"lastName\": \"\(information.lastName)\",\"mapString\": \"\(information.mapString)\", \"mediaURL\": \"\(information.mediaURL)\",\"latitude\": \(information.latitude), \"longitude\": \(information.longitude)}"
+        RequestCenter.taskForPOSTRequest(url: Endpoints.addStudentLocation.url, ResponseType: PostStudentLocationResponse.self, apiType: "Parse", httpMethod: "POST", body: body) { (response, error) in
+            if let response = response, response.createdAt != nil {
+                Auth.objectId = response.objectId ?? ""
+                completion(true,nil)
+            } else {
+                completion(false,error)
+            }
+        }
+       
     }
     
 }

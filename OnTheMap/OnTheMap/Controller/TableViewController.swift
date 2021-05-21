@@ -12,8 +12,7 @@ class TableViewController:UIViewController, UITableViewDelegate, UITableViewData
     
     @IBOutlet weak var studentListTableView: UITableView!
     @IBOutlet weak var logoutButton: UIBarButtonItem!
-    @IBOutlet weak var studentName: UILabel!
-    @IBOutlet weak var studentWebAdress: UILabel!
+    @IBOutlet weak var refreshTable: UIBarButtonItem!
     
     var students = [LocationsResponse]()
     
@@ -74,5 +73,8 @@ class TableViewController:UIViewController, UITableViewDelegate, UITableViewData
                 self.dismiss(animated: true, completion: nil)
             }
         }
+    }
+    @IBAction func refreshTableTapped(_ sender: Any) {
+        getStudentList()
     }
 }
