@@ -14,14 +14,24 @@ class TableViewController:UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var logoutButton: UIBarButtonItem!
     @IBOutlet weak var refreshTable: UIBarButtonItem!
     
+    var activityIndicator: UIActivityIndicatorView!
+    
     var students = [LocationsResponse]()
     
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+        
+        activityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
+        self.view.addSubview(activityIndicator)
+        activityIndicator.bringSubviewToFront(self.view)
+        activityIndicator.center = self.view.center
+        setActivityIndicator(myIndicator: activityIndicator, status: "Show")
+        
+        
         studentListTableView.dataSource = self
         studentListTableView.delegate = self
         self.studentListTableView.reloadData()
+        super.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -36,10 +46,12 @@ class TableViewController:UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func getStudentList() {
+        setActivityIndicator(myIndicator: activityIndicator, status: "Show")
         UdacityClient.getStudentLocations { (students, error) in
             self.students = students ?? []
             DispatchQueue.main.async {
                 self.studentListTableView.reloadData()
+                self.setActivityIndicator(myIndicator: self.activityIndicator, status: "Hide")
             }
         }
     }
@@ -68,13 +80,27 @@ class TableViewController:UIViewController, UITableViewDelegate, UITableViewData
     // MARK: Logout Button
     
     @IBAction func logoutButtonTapped(_ sender: Any) {
+        setActivityIndicator(myIndicator: activityIndicator, status: "Show")
         UdacityClient.logout {
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [self] in
                 self.dismiss(animated: true, completion: nil)
+                self.setActivityIndicator(myIndicator: self.activityIndicator, status: "Hide")
             }
         }
     }
     @IBAction func refreshTableTapped(_ sender: Any) {
         getStudentList()
     }
+    
+    // MARK: Activity Indicator Settings
+    func setActivityIndicator(myIndicator: UIActivityIndicatorView, status: String) {
+        if status == "Show" {
+            myIndicator.isHidden = false
+            myIndicator.startAnimating()
+        } else {
+            myIndicator.isHidden = true
+            myIndicator.stopAnimating()
+        }
+    }
+
 }

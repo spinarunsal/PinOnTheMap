@@ -10,6 +10,13 @@ import UIKit
 
 extension UIViewController {
     
+    // MARK: SetUI
+    func setUI(firstTextField: UITextField, secondTextField: UITextField, button: UIButton, logginIn: Bool){
+        firstTextField.isEnabled = !logginIn
+        secondTextField.isEnabled = !logginIn
+        button.isEnabled = !logginIn
+    }
+        
     // MARK: Show Alert
     func showAlert(message: String, title: String) {
         let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -27,11 +34,4 @@ extension UIViewController {
         UIApplication.shared.open(url,options: [:])
     }
     
-    // MARK: Check TextFields Errors
-    func showEmptyTextWarning(message: String) {
-        let alertVC = UIAlertController(title: message, message: "Please text field cannot be empty!", preferredStyle: .alert)
-        alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        present(alertVC, animated: true, completion: nil)
-    }
-
 }

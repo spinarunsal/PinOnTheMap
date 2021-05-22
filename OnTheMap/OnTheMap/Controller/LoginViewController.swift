@@ -45,14 +45,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         } else {
             activityIndicator.stopAnimating()
         }
-        setUI(logginIn)
-    }
-    
-    func setUI(_ logginIn: Bool) {
-        emailTextField.isEnabled = !logginIn
-        passwordTextField.isEnabled = !logginIn
-        signupButton.isEnabled = !logginIn
-        
+        setUI(firstTextField: emailTextField, secondTextField: passwordTextField, button: signupButton, logginIn: logginIn)
     }
     
     // MARK: Handle Login Response
@@ -61,7 +54,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         if success {
             DispatchQueue.main.async {
                 self.performSegue(withIdentifier: "login", sender: nil)
-                
             }
         } else {
             showAlert(message: error?.localizedDescription ?? "", title: "Login Failed")

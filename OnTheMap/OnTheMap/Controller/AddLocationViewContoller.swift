@@ -9,11 +9,11 @@ import Foundation
 import UIKit
 class AddLocationViewContoller: UIViewController {
     
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    
+
     @IBOutlet weak var locationTextField: UITextField!
     @IBOutlet weak var websiteTextField: UITextField!
     @IBOutlet weak var findLocationButton: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     var location: CGPoint!
     
     override func viewDidLoad() {
@@ -40,7 +40,7 @@ class AddLocationViewContoller: UIViewController {
         
     }
     @IBAction func findLocationTapped(_ sender: Any) {
-        
+        activityIndicator.startAnimating()
         guard self.locationTextField.text != "" else {
             showAlert(message: "Empty Location", title: "Text fields cannot be empty!")
             return
@@ -50,6 +50,7 @@ class AddLocationViewContoller: UIViewController {
             return
         }
         //performSegue(withIdentifier: "findLocation", sender: nil)
+        activityIndicator.stopAnimating()
     }
     
     func handlePOSTLocationResponse(result: Bool, error: Error?) {
@@ -64,8 +65,11 @@ class AddLocationViewContoller: UIViewController {
     }
     //upload location
     func addLocation() {
+        activityIndicator.startAnimating()
         let requestLocation = StudentLocationRequest(uniqueKey: "", firstName: "", lastName: "", mapString: self.locationTextField.text!, mediaURL: self.websiteTextField.text!, latitude: Double(self.location.x), longitude: Double(self.location.y))
         UdacityClient.addStudentLocation(information: requestLocation, completion: handlePOSTLocationResponse(result:error:))
+        activityIndicator.stopAnimating()
+        activityIndicator.isHidden = true
     }
     
 }

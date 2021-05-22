@@ -13,7 +13,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var logoutButton: UIBarButtonItem!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var refreshPin: UIBarButtonItem!
-    
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+
     var locations = [LocationsResponse]()
     var annotaions = [MKPointAnnotation]()
     
@@ -21,12 +22,17 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         super.viewDidLoad()
         mapView.delegate = self
         getStudentPins()
+//        activityIndicator.bringSubviewToFront(self.view)
+//        activityIndicator.center = self.view.center
     }
     
+    // MARK: Logout tapped
     @IBAction func logoutButtonTapped(_ sender: Any) {
+        self.activityIndicator.startAnimating()
         UdacityClient.logout {
             DispatchQueue.main.async {
                 self.dismiss(animated: true, completion: nil)
+                self.activityIndicator.stopAnimating()
             }
         }
     }
@@ -36,7 +42,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
     
     func getStudentPins() {
-        
+        self.activityIndicator.startAnimating()
         UdacityClient.getStudentLocations { (locations, error) in
             self.mapView.removeAnnotations(self.annotaions)
             self.annotaions.removeAll()
@@ -60,6 +66,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             DispatchQueue.main.async {
                 //hata olursa check here
                 self.mapView.addAnnotations(self.annotaions)
+                self.activityIndicator.stopAnimating()
+                self.activityIndicator.isHidden = true
+                
             }
         }
     }

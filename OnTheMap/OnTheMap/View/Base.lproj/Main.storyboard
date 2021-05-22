@@ -227,7 +227,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oXM-78-lor" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1754" y="496"/>
+            <point key="canvasLocation" x="1753.6231884057972" y="495.53571428571428"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Tox-OR-77k">
@@ -273,12 +273,22 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="J92-jH-MQI">
                                 <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                             </mapView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="BAD-El-dxS">
+                                <rect key="frame" x="185" y="357" width="45" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="HQ1-Yr-bHU"/>
+                                    <constraint firstAttribute="width" constant="45" id="ghn-hp-PuA"/>
+                                </constraints>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="9Nv-jb-Asn"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="9Nv-jb-Asn" firstAttribute="trailing" secondItem="BAD-El-dxS" secondAttribute="trailing" constant="184" id="D5b-O9-DWo"/>
                             <constraint firstItem="J92-jH-MQI" firstAttribute="top" secondItem="9Nv-jb-Asn" secondAttribute="top" id="Is5-IP-mLn"/>
+                            <constraint firstItem="BAD-El-dxS" firstAttribute="leading" secondItem="9Nv-jb-Asn" secondAttribute="leading" constant="185" id="Sjg-BQ-tgE"/>
                             <constraint firstItem="J92-jH-MQI" firstAttribute="trailing" secondItem="9Nv-jb-Asn" secondAttribute="trailing" id="Wc2-32-VnT"/>
+                            <constraint firstItem="BAD-El-dxS" firstAttribute="top" secondItem="9Nv-jb-Asn" secondAttribute="top" constant="269" id="dkP-Cv-8ut"/>
                             <constraint firstItem="J92-jH-MQI" firstAttribute="leading" secondItem="9Nv-jb-Asn" secondAttribute="leading" id="roM-5F-UT3"/>
                             <constraint firstItem="J92-jH-MQI" firstAttribute="bottom" secondItem="9Nv-jb-Asn" secondAttribute="bottom" id="xHo-jC-s7o"/>
                         </constraints>
@@ -303,6 +313,7 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityIndicator" destination="BAD-El-dxS" id="Hdk-0J-OGr"/>
                         <outlet property="logoutButton" destination="xcP-qu-eVj" id="IjZ-WR-FBi"/>
                         <outlet property="mapView" destination="J92-jH-MQI" id="svv-dH-351"/>
                         <outlet property="refreshPin" destination="fZj-nT-B2R" id="phr-oL-m17"/>
@@ -310,7 +321,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fuU-7Y-Juk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1754" y="-158"/>
+            <point key="canvasLocation" x="1753.6231884057972" y="-158.03571428571428"/>
         </scene>
         <!--Add Location-->
         <scene sceneID="jFO-Mc-Vp4">
@@ -391,7 +402,7 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="activityIndicator" destination="4o3-Jk-03a" id="tJF-Ug-5YU"/>
+                        <outlet property="activityIndicator" destination="4o3-Jk-03a" id="VkZ-Ae-Wmv"/>
                         <outlet property="findLocationButton" destination="Rk9-g4-r1g" id="NC8-rm-KZA"/>
                         <outlet property="locationTextField" destination="GCE-qS-57L" id="u10-oE-uAz"/>
                         <outlet property="websiteTextField" destination="93F-KN-VzT" id="3Xl-4c-h8Q"/>
@@ -460,11 +471,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6PN-sy-O0m" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4180" y="248"/>
+            <point key="canvasLocation" x="3896" y="94"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="iF0-uT-dMR"/>
+        <segue reference="hfj-VS-PAC"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="icon_addpin" width="24" height="24"/>
