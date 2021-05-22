@@ -12,17 +12,17 @@
         class func taskForGetRequest<ResponseType: Decodable>(url: URL, apiType: String, responseType: ResponseType.Type, completion: @escaping (ResponseType?, Error?) -> Void) {
             
             var request = URLRequest(url: url)
-//            request.httpMethod = "GET"
-//
-//
-//            if apiType == "Udacity" {
-//                request.addValue("application/json", forHTTPHeaderField: "Accept")
-//                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//            } else {
-//                request.addValue("application/json", forHTTPHeaderField: "Accept")
-//                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//                print("im in parse else in the gettask")
-//            }
+            //            request.httpMethod = "GET"
+            //
+            //
+            //            if apiType == "Udacity" {
+            //                request.addValue("application/json", forHTTPHeaderField: "Accept")
+            //                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            //            } else {
+            //                request.addValue("application/json", forHTTPHeaderField: "Accept")
+            //                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            //                print("im in parse else in the gettask")
+            //            }
             
             let task = URLSession.shared.dataTask(with: request) {
                 data, response, error in
@@ -85,7 +85,6 @@
                 guard let data = data else {
                     DispatchQueue.main.async {
                         completion(nil, error)
-                        
                     }
                     return
                 }

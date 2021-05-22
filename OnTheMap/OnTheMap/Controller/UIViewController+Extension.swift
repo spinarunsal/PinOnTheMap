@@ -14,7 +14,8 @@ extension UIViewController {
     func showAlert(message: String, title: String) {
         let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        show(alertVC, sender: nil)
+            present(alertVC, animated: true, completion: nil)
+ 
     }
     
     // MARK: Open Link in Safari
@@ -26,7 +27,11 @@ extension UIViewController {
         UIApplication.shared.open(url,options: [:])
     }
     
-    // MARK: LogOut Button Tapped
-    
-    
+    // MARK: Check TextFields Errors
+    func showEmptyTextWarning(message: String) {
+        let alertVC = UIAlertController(title: message, message: "Please text field cannot be empty!", preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alertVC, animated: true, completion: nil)
+    }
+
 }

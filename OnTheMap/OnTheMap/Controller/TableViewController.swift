@@ -46,12 +46,12 @@ class TableViewController:UIViewController, UITableViewDelegate, UITableViewData
     
     // MARK: Table view data source
     
-     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print(students.count)
         return students.count
     }
     
-     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "StudentListCell", for: indexPath)
         let student = students[indexPath.row]
         cell.imageView?.image = UIImage(named: "icon_pin")
@@ -60,7 +60,7 @@ class TableViewController:UIViewController, UITableViewDelegate, UITableViewData
         return cell
     }
     
-     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let student = students[indexPath.row]
         openLink(student.mediaURL ?? "")
     }

@@ -23,7 +23,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         getStudentPins()
     }
     
-    
     @IBAction func logoutButtonTapped(_ sender: Any) {
         UdacityClient.logout {
             DispatchQueue.main.async {
@@ -95,5 +94,4 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             }
         }
     }
-    
 }

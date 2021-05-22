@@ -35,7 +35,7 @@ class UdacityClient {
             case .signUp: return "https://auth.udacity.com/sign-up"
             case .getLogginUserProfile: return Endpoints.base + "/users/" + Auth.key
             case .getStudentLocation: return Endpoints.base + "/StudentLocation?order=-updatedAt"
-            case .addStudentLocation: return Endpoints.base + "/StudentLocation/"
+            case .addStudentLocation: return Endpoints.base + "/StudentLocation"
             }
         }
         
@@ -69,43 +69,43 @@ class UdacityClient {
         var xsrfCookie: HTTPCookie? = nil
         let sharedCookieStorage = HTTPCookieStorage.shared
         for cookie in sharedCookieStorage.cookies! {
-          if cookie.name == "XSRF-TOKEN" { xsrfCookie = cookie }
+            if cookie.name == "XSRF-TOKEN" { xsrfCookie = cookie }
         }
         if let xsrfCookie = xsrfCookie {
-          request.setValue(xsrfCookie.value, forHTTPHeaderField: "X-XSRF-TOKEN")
+            request.setValue(xsrfCookie.value, forHTTPHeaderField: "X-XSRF-TOKEN")
         }
         let session = URLSession.shared
         let task = session.dataTask(with: request) { data, response, error in
-          if error != nil { // Handle error…
-            print("LoggingOut Error")
-              return
-          }
-          let range = 5..<data!.count
-          let newData = data?.subdata(in: range) /* subset response data! */
-          print(String(data: newData!, encoding: .utf8)!)
+            if error != nil { // Handle error…
+                print("LoggingOut Error")
+                return
+            }
+            let range = 5..<data!.count
+            let newData = data?.subdata(in: range) /* subset response data! */
+            print(String(data: newData!, encoding: .utf8)!)
             Auth.sessionId = ""
             completion()
         }
         task.resume()
-    
-    
+        
+        
     }
-    
-    class func getLogginInUserProfile(completion: @escaping (Bool, Error?) -> Void) {
-        RequestCenter.taskForGetRequest(url: Endpoints.getLogginUserProfile.url, apiType: "Udacity", responseType: UserProfile.self) { (response, error) in
-            if let response = response {
-                print("First Name : \(response.firstname) && Last Name : \(response.lastname) && Full Name: \(response.nickname)")
-                Auth.firstname = response.firstname
-                Auth.lastname = response.lastname
-                
-                completion(true,nil)
-            } else {
-                print("Failed to get user's profile.")
-                completion(false,error)
-            }
-        }
-    }
-    
+    // MARK: getLogginInUserProfile
+    //    class func getLogginInUserProfile(completion: @escaping (Bool, Error?) -> Void) {
+    //        RequestCenter.taskForGetRequest(url: Endpoints.getLogginUserProfile.url, apiType: "Udacity", responseType: UserProfile.self) { (response, error) in
+    //            if let response = response {
+    //                print("First Name : \(response.firstname) && Last Name : \(response.lastname) && Full Name: \(response.nickname)")
+    //                Auth.firstname = response.firstname
+    //                Auth.lastname = response.lastname
+    //
+    //                completion(true,nil)
+    //            } else {
+    //                print("Failed to get user's profile.")
+    //                completion(false,error)
+    //            }
+    //        }
+    //    }
+    // MARK: Get Student Location
     class func getStudentLocations(completion: @escaping ([LocationsResponse]?, Error?) -> Void) {
         RequestCenter.taskForGetRequest(url: Endpoints.getStudentLocation.url, apiType: "Parse", responseType: StudentLocation.self) { (response, error) in
             if let response = response {
@@ -117,17 +117,19 @@ class UdacityClient {
         }
     }
     
-    class func addStudentLocation(information:LocationsResponse, completion: @escaping (Bool, Error?) -> Void) {
-        let body = "{\"uniqueKey\": \"\(information.uniqueKey)\", \"firstName\": \"\(information.firstName)\", \"lastName\": \"\(information.lastName)\",\"mapString\": \"\(information.mapString)\", \"mediaURL\": \"\(information.mediaURL)\",\"latitude\": \(information.latitude), \"longitude\": \(information.longitude)}"
+    // MARK: Add Student Location
+    class func addStudentLocation(information:StudentLocationRequest, completion: @escaping (Bool, Error?) -> Void) {
+        let body = "{\"uniqueKey\": \"\(information.uniqueKey )\", \"firstName\": \"\(information.firstName )\", \"lastName\": \"\(information.lastName )\",\"mapString\": \"\(information.mapString )\", \"mediaURL\": \"\(information.mediaURL )\",\"latitude\": \(information.latitude ), \"longitude\": \(information.longitude )}"
+        print("Add Student body: \(body)")
         RequestCenter.taskForPOSTRequest(url: Endpoints.addStudentLocation.url, ResponseType: PostStudentLocationResponse.self, apiType: "Parse", httpMethod: "POST", body: body) { (response, error) in
             if let response = response, response.createdAt != nil {
-                Auth.objectId = response.objectId ?? ""
+                //Auth.objectId = response.objectId ?? ""
                 completion(true,nil)
             } else {
+                print("Add Student response ERORR")
                 completion(false,error)
             }
         }
-       
     }
     
 }
