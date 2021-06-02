@@ -26,6 +26,10 @@ class MapViewController: UIViewController, MKMapViewDelegate {
 //        activityIndicator.center = self.view.center
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        getStudentPins()
+    }
     // MARK: Logout tapped
     @IBAction func logoutButtonTapped(_ sender: Any) {
         self.activityIndicator.startAnimating()
@@ -41,6 +45,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         getStudentPins()
     }
     
+    @IBAction func addLocationButtonTapped(_ sender: Any) {
+        performSegue(withIdentifier: "addLocation", sender: nil)
+    }
     func getStudentPins() {
         self.activityIndicator.startAnimating()
         UdacityClient.getStudentLocations { (locations, error) in
@@ -58,7 +65,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 
                 let annotation = MKPointAnnotation()
                 annotation.coordinate = coordinate
-                annotation.title = "\(first ?? "") \(last ?? "")"
+                annotation.title = "\(first ?? "empty") \(last ?? "empty")"
                 annotation.subtitle = mediaUrl
                 self.annotaions.append(annotation)
             }

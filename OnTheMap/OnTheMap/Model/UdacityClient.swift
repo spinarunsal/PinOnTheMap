@@ -16,6 +16,7 @@ class UdacityClient {
         static var key = ""
         static var firstname = ""
         static var lastname = ""
+        static var createdAt = ""
     }
     
     enum Endpoints {
@@ -34,7 +35,7 @@ class UdacityClient {
                 return Endpoints.base + "/session"
             case .signUp: return "https://auth.udacity.com/sign-up"
             case .getLogginUserProfile: return Endpoints.base + "/users/" + Auth.key
-            case .getStudentLocation: return Endpoints.base + "/StudentLocation?order=-updatedAt"
+            case .getStudentLocation: return Endpoints.base + "/StudentLocation?order=-updatedAt&limit=100"
             case .addStudentLocation: return Endpoints.base + "/StudentLocation"
             }
         }
@@ -91,20 +92,40 @@ class UdacityClient {
         
     }
     // MARK: getLogginInUserProfile
-    //    class func getLogginInUserProfile(completion: @escaping (Bool, Error?) -> Void) {
-    //        RequestCenter.taskForGetRequest(url: Endpoints.getLogginUserProfile.url, apiType: "Udacity", responseType: UserProfile.self) { (response, error) in
-    //            if let response = response {
-    //                print("First Name : \(response.firstname) && Last Name : \(response.lastname) && Full Name: \(response.nickname)")
-    //                Auth.firstname = response.firstname
-    //                Auth.lastname = response.lastname
-    //
-    //                completion(true,nil)
-    //            } else {
-    //                print("Failed to get user's profile.")
-    //                completion(false,error)
-    //            }
-    //        }
-    //    }
+        class func getLogginInUserProfile(completion: @escaping (UserProfile?, Error?) -> Void) {
+            
+            RequestCenter.taskForGetRequest(url: Endpoints.getLogginUserProfile.url, apiType: "Udacity", responseType: UserProfile.self) { (response, error) in
+                if let response = response {
+                    DispatchQueue.main.async {
+                        completion(response, nil)
+                    }
+                    print("add student location in udacity client \(response)")
+                } else {
+                    DispatchQueue.main.async {
+                        completion(nil,error)
+                    }
+                }
+            }
+            
+        }
+// MARK: **********************************************************
+    // MARK: Add/POST Student Location
+    class func addStudentLocation(uniqueKey: String, firstName: String, lastName: String, mapString: String, mediaUrl: String, latitude: Double, longtitude: Double, completion: @escaping (Bool, Error?) -> Void) {
+
+        taskPOSTRequest(url: Endpoints.addStudentLocation.url, body: StudentLocationRequest(uniqueKey: uniqueKey, firstName: firstName, lastName: lastName, mapString: mapString, mediaURL: mediaUrl, latitude: latitude, longitude: longtitude), response: PostStudentLocationResponse.self) { (response, error) in
+            if let response = response {
+                Auth.objectId = response.objectId
+                Auth.createdAt = response.createdAt
+                completion(true, nil)
+            } else {
+                completion(false, error)
+            }
+        }
+ 
+    }
+  
+// MARK: **********************************************************
+
     // MARK: Get Student Location
     class func getStudentLocations(completion: @escaping ([LocationsResponse]?, Error?) -> Void) {
         RequestCenter.taskForGetRequest(url: Endpoints.getStudentLocation.url, apiType: "Parse", responseType: StudentLocation.self) { (response, error) in
@@ -117,19 +138,42 @@ class UdacityClient {
         }
     }
     
-    // MARK: Add Student Location
-    class func addStudentLocation(information:StudentLocationRequest, completion: @escaping (Bool, Error?) -> Void) {
-        let body = "{\"uniqueKey\": \"\(information.uniqueKey )\", \"firstName\": \"\(information.firstName )\", \"lastName\": \"\(information.lastName )\",\"mapString\": \"\(information.mapString )\", \"mediaURL\": \"\(information.mediaURL )\",\"latitude\": \(information.latitude ), \"longitude\": \(information.longitude )}"
-        print("Add Student body: \(body)")
-        RequestCenter.taskForPOSTRequest(url: Endpoints.addStudentLocation.url, ResponseType: PostStudentLocationResponse.self, apiType: "Parse", httpMethod: "POST", body: body) { (response, error) in
-            if let response = response, response.createdAt != nil {
-                //Auth.objectId = response.objectId ?? ""
-                completion(true,nil)
-            } else {
-                print("Add Student response ERORR")
-                completion(false,error)
+    class func taskPOSTRequest<Request: Encodable, Response: Decodable>(url: URL, body:Request, response: Response.Type, completionHandler: @escaping (Response?, Error?) -> Void) {
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let enconder = JSONEncoder()
+        do {
+            request.httpBody = try enconder.encode(body)
+        } catch {
+            DispatchQueue.main.async {
+                completionHandler(nil, error)
             }
         }
-    }
+        
+        let task = URLSession.shared.dataTask(with: request) { (data, _, error) in
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    completionHandler(nil, error)
+            }
+                return
+            }
+            let decoder = JSONDecoder()
+            
+            do {
+                let object = try decoder.decode(response.self, from: data)
+                DispatchQueue.main.async {
+                    completionHandler(object, nil)
+                }
+            } catch {
+                print(error.localizedDescription)
+                DispatchQueue.main.async {
+                    completionHandler(nil, error)
+                    }
+                }
+            }
+        task.resume()
+        }
     
 }

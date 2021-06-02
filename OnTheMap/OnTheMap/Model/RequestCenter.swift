@@ -11,7 +11,7 @@
         // MARK: GET Request
         class func taskForGetRequest<ResponseType: Decodable>(url: URL, apiType: String, responseType: ResponseType.Type, completion: @escaping (ResponseType?, Error?) -> Void) {
             
-            var request = URLRequest(url: url)
+            let request = URLRequest(url: url)
             //            request.httpMethod = "GET"
             //
             //

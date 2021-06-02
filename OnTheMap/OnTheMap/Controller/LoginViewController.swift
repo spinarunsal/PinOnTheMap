@@ -20,12 +20,24 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        emailTextField.delegate = self
-        passwordTextField.delegate = self
+        self.emailTextField.delegate = self
+        self.passwordTextField.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        subscribeToKeyboardNotification()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        unsubscribeToKeyboardNotification()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        return true;
     }
     
     @IBAction func signupTapped(_ sender: Any) {
@@ -34,6 +46,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     // MARK: Login Tapped
     @IBAction func loginTapped(_ sender: Any) {
+        // MARK: Error Check for the TextFields
+        guard self.emailTextField.text != "" else {
+            showAlert(message: "Empty Email", title: "Text fields cannot be empty!")
+            return
+        }
+        guard self.passwordTextField.text != "" else {
+            showAlert(message: "Empty Password", title: "Text fields cannot be empty!")
+            return
+        }
         setLogginIn(true)
         UdacityClient.login(username: self.emailTextField.text ?? "", password: self.passwordTextField.text ?? "", completion: handleLoginResponse(success:error:))
     }
@@ -41,9 +62,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     // MARK: Login State
     func setLogginIn(_ logginIn: Bool) {
         if logginIn{
-            activityIndicator.startAnimating()
+            DispatchQueue.main.async {
+                self.activityIndicator.startAnimating()
+            }
         } else {
-            activityIndicator.stopAnimating()
+            DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
+            }
         }
         setUI(firstTextField: emailTextField, secondTextField: passwordTextField, button: signupButton, logginIn: logginIn)
     }
@@ -56,7 +81,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 self.performSegue(withIdentifier: "login", sender: nil)
             }
         } else {
-            showAlert(message: error?.localizedDescription ?? "", title: "Login Failed")
+            DispatchQueue.main.async {
+                self.showAlert(message: error?.localizedDescription ?? "", title: "Login Failed")
+            }
         }
     }
 }

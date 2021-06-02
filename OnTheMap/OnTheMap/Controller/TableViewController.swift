@@ -92,6 +92,9 @@ class TableViewController:UIViewController, UITableViewDelegate, UITableViewData
         getStudentList()
     }
     
+    @IBAction func addLocationButtonTapped(_ sender: Any) {
+        performSegue(withIdentifier: "addLocation", sender: nil)
+    }
     // MARK: Activity Indicator Settings
     func setActivityIndicator(myIndicator: UIActivityIndicatorView, status: String) {
         if status == "Show" {
