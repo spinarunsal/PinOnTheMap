@@ -43,7 +43,7 @@ PinOnTheMap is an an app with a map that shows information posted by other stude
   <li>The bar button directly to its right will be a plus button. Clicking on the plus button will modally present the Information Posting View.</li>
   <li>When the Information Posting View is modally presented, the user sees two text fields: one asks for a location and the other asks for a link.</li>
   <li>When the user clicks on the “Find Location” button, the app will forward geocode the string. If the forward geocode fails, the app will display an alert view notifying the user. Likewise, an alert will be displayed if the link is empty.</li>
-  <li>If the forward geocode succeeds then text fields will be hidden, and a map showing the entered location will be displayed. Tapping the “Finish” button will post the location and link to the server.</li>
+  <li>If the forward geocode succeeds then text fields will be hidden, and a map showing the entered location will be displayed. Tapping the “Add Location” button will post the location and link to the server.</li>
   <li>If the submission fails to post the data to the server, then the user should see an alert with an error message describing the failure.</li>
   <li>If at any point the user clicks on the “Cancel” button, then the Information Posting View should be dismissed, returning the app to the Map and Table Tabbed View.</li>
   <li>Likewise, if the submission succeeds, then the Information Posting View should be dismissed, returning the app to the Map and Table Tabbed View.</li>
