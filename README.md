@@ -40,7 +40,7 @@ PinOnTheMap is an an app with a map that shows information posted by other stude
   <li>Each row displays the name from the student’s Udacity profile. Tapping on the row launches Safari and opens the link associated with the student.</li>
   <li>Both the map tab and the table tab share the same top navigation bar.</li>
   <li>The rightmost bar button will be a refresh button. Clicking on the button will refresh the entire data set by downloading and displaying the most recent 100 posts made by students.</li>
-  <li>The bar button directly to its left will be a pin button. Clicking on the pin button will modally present the Information Posting View.</li>
+  <li>The bar button directly to its right will be a plus button. Clicking on the plus button will modally present the Information Posting View.</li>
   <li>When the Information Posting View is modally presented, the user sees two text fields: one asks for a location and the other asks for a link.</li>
   <li>When the user clicks on the “Find Location” button, the app will forward geocode the string. If the forward geocode fails, the app will display an alert view notifying the user. Likewise, an alert will be displayed if the link is empty.</li>
   <li>If the forward geocode succeeds then text fields will be hidden, and a map showing the entered location will be displayed. Tapping the “Finish” button will post the location and link to the server.</li>
