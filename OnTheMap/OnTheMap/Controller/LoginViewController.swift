@@ -20,8 +20,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.emailTextField.delegate = self
-        self.passwordTextField.delegate = self
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -37,7 +37,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         
-        return true;
+        return true
     }
     
     @IBAction func signupTapped(_ sender: Any) {
@@ -61,30 +61,19 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: Login State
     func setLogginIn(_ logginIn: Bool) {
-        if logginIn{
-            DispatchQueue.main.async {
-                self.activityIndicator.startAnimating()
-            }
-        } else {
-            DispatchQueue.main.async {
-                self.activityIndicator.stopAnimating()
-            }
+        DispatchQueue.main.async {
+            logginIn ? self.activityIndicator.startAnimating() : self.activityIndicator.stopAnimating()
         }
+        
         setUI(firstTextField: emailTextField, secondTextField: passwordTextField, button: signupButton, logginIn: logginIn)
     }
     
     // MARK: Handle Login Response
     func handleLoginResponse(success: Bool, error: Error?) {
         setLogginIn(false)
-        if success {
-            DispatchQueue.main.async {
-                self.performSegue(withIdentifier: "login", sender: nil)
-            }
-        } else {
-            DispatchQueue.main.async {
-                self.showAlert(message: error?.localizedDescription ?? "", title: "Login Failed")
-            }
+        
+        DispatchQueue.main.async {
+            success ? self.performSegue(withIdentifier: "login", sender: nil) : self.showAlert(message: error?.localizedDescription ?? "", title: "Login Failed")
         }
     }
 }
-

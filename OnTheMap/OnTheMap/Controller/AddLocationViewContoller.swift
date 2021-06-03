@@ -61,18 +61,17 @@ class AddLocationViewContoller: UIViewController, UITextFieldDelegate{
         // MARK: Error Check for the TextFields
         
         guard self.locationTextField.text != "" else {
+            activityIndicator.stopAnimating()
             showAlert(message: "Empty Location", title: "Text fields cannot be empty!")
             return
         }
         guard self.websiteTextField.text != "" else {
+            activityIndicator.stopAnimating()
             showAlert(message: "Empty URL", title: "Text fields cannot be empty!")
             return
         }
-        
-        activityIndicator.stopAnimating()
-        
         searchLocation()
-        showMapView()
+        hideMapview()
     }
     
     func handlePOSTLocationResponse(result: Bool, error: Error?) {
